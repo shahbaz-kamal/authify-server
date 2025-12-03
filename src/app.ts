@@ -7,6 +7,7 @@ import expressSession from "express-session";
 import { envVars } from "./app/config/env";
 // import "./app/config/passport";
 import { logger } from "./app/middlewares/logger";
+import { router } from "./app/routes";
 
 export const app = express();
 
@@ -36,7 +37,7 @@ app.use(
 app.use(logger);
 
 //// routing middlewares
-// app.use("/api/v1", router);
+app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("🔐 authify server is running ");
