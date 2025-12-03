@@ -9,6 +9,7 @@ export enum Role {
     providerId: string;
   }
 export interface IUser {
+  _id?:string,
   name: string;
   email?: string | null;
   password?: string | null;

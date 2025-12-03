@@ -4,13 +4,11 @@ import { User } from "./user.model";
 import httpStatus from "http-status-codes";
 import bcryptjs from "bcryptjs";
 import { envVars } from "../../config/env";
+import { JwtPayload } from "jsonwebtoken";
+import { generateToken } from "../../utils/jwt";
+
 const createUser = async (payload: Partial<IUser>) => {
-  let isUserExist;
-  if (payload.email) {
-    isUserExist = await User.findOne({ email: payload.email });
-  } else {
-    isUserExist = await User.findOne({ phone: payload.phone });
-  }
+  const isUserExist = await User.findOne({ email: payload.email });
 
   if (isUserExist) throw new AppError(httpStatus.BAD_REQUEST, "User Already exist");
 
@@ -30,4 +28,38 @@ const createUser = async (payload: Partial<IUser>) => {
   return user;
 };
 
-export const UserService = { createUser };
+const credentialsLogin = async (payload: Partial<IUser>) => {
+  const isUserExist = await User.findOne({ email: payload.email });
+
+  if (!isUserExist) throw new AppError(httpStatus.BAD_REQUEST, "User does not exist");
+
+  const { password, ...rest } = payload;
+  const isPasswordMatched = await bcryptjs.compare(password as string, isUserExist.password as string);
+  if (!isPasswordMatched) throw new AppError(httpStatus.UNAUTHORIZED, "Password dosent match");
+
+  const jwtPayload: JwtPayload = {
+    userId: isUserExist._id,
+    email: isUserExist.email,
+    role: isUserExist.role,
+  };
+  const accessToken = generateToken(jwtPayload, envVars.JWT_ACCESS_TOKEN_SECRET, envVars.JWT_ACCESS_TOKEN_EXPIRES_IN);
+  return {
+    user: isUserExist,
+    accessToken,
+  };
+};
+const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken: JwtPayload) => {
+  const isUserExist = await User.findById(userId);
+
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
+  }
+
+  const newUpdatedUser = await User.findByIdAndUpdate(userId, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return newUpdatedUser;
+};
+
+export const UserService = { createUser, credentialsLogin, updateUser };

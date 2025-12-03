@@ -33,3 +33,17 @@ export const createUserZodSchema = z.object({
     })
     .optional(),
 });
+export const updateUserZodSchema = z.object({
+  bio: z
+    .string("Name is required")
+    .min(2, "Name should be at least minimum of two characters")
+    .max(50, "Name should be maximum of 50 characters")
+    .optional(),
+  profilePhoto: z.string("Photo must be string").optional(),
+  location: z
+    .string("Address must be string")
+    .max(200, {
+      message: "Address can not exceed more than 200 characters",
+    })
+    .optional(),
+});
