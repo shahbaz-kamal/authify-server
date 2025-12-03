@@ -8,6 +8,8 @@ import { envVars } from "./app/config/env";
 // import "./app/config/passport";
 import { logger } from "./app/middlewares/logger";
 import { router } from "./app/routes";
+import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
+import { notFoundRoute } from "./app/middlewares/notFoundError";
 
 export const app = express();
 
@@ -45,7 +47,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // global error handler
 
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 // // not found route
-// app.use(notFoundRoute);
+app.use(notFoundRoute);

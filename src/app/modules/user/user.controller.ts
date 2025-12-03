@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
 import httpStatus from "http-status-codes";
+import AppError from "../../errorHelpers/AppError";
 const createUser = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
@@ -11,9 +12,7 @@ const createUser = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.BAD_REQUEST).json({
-      message: `Something went wrong!! ${error}`,
-    });
+    throw new AppError(httpStatus.BAD_REQUEST, "Failed to create user");
   }
 };
 
