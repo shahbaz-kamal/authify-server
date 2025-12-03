@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { envVars } from "../config/env";
 import { TErrorSources } from "../interfaces/error.types";
 import { handleDuplicateError } from "../../helpers/handleDuplicateError";
+import { handleZodError } from "../../helpers/handleZodError";
 
 
 
@@ -29,6 +30,13 @@ export const globalErrorHandler = async (
     const simplifiedError = handleDuplicateError(error);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
+  }
+  //zod error
+  else if (error.name === "ZodError") {
+    const simplifiedError = handleZodError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSource = simplifiedError.errorSource as TErrorSources[];
   }
   //cast error
   else {
