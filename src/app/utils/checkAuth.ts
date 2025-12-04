@@ -9,7 +9,7 @@ import { verifyToken } from "../utils/jwt";
 
 export const checkAuth = () => async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const accessToken = req.headers.authorization;
+    const accessToken = req.headers.authorization as string || req.cookies.accessToken as string;
     if (!accessToken) throw new AppError(401, "No Token Received");
     const verifiedToken = verifyToken(accessToken as string, envVars.JWT_ACCESS_TOKEN_SECRET);
     if (!verifiedToken) throw new AppError(401, "Token is not verified");
@@ -17,9 +17,9 @@ export const checkAuth = () => async (req: Request, res: Response, next: NextFun
     const isUSerExist = await User.findById(userId);
     if (!isUSerExist) throw new AppError(401, "User dosent exist");
 
-    const frontendUserId = req.params.id;
-    if (frontendUserId !== (verifiedToken as JwtPayload).userId)
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not permitted to do this action");
+    // const frontendUserId = req.params.id;
+    // if (frontendUserId !== (verifiedToken as JwtPayload).userId)
+    //   throw new AppError(httpStatus.UNAUTHORIZED, "You are not permitted to do this action");
     const isCredentialAuthenticated = isUSerExist.auths[0].provider === "credentials";
     if (isCredentialAuthenticated) {
       if ((verifiedToken as JwtPayload).email !== isUSerExist.email) {

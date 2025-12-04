@@ -11,8 +11,8 @@ const authProviderSchema = new Schema<IAuthProvider>(
 
 const userSchema = new Schema<IUser>(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    name: { type: String, default:null },
+    email: { type: String, default:null, unique: true },
 
     password: { type: String, default: null },
     role: {
@@ -26,6 +26,7 @@ const userSchema = new Schema<IUser>(
     location: { type: String, default: null },
 
     auths: { type: [authProviderSchema], required: true },
+    bio: { type: String, default: null },
   },
   { timestamps: true, versionKey: false }
 );

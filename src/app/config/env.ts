@@ -9,6 +9,8 @@ interface EnvVars {
   BCRYPT_SALT_ROUND: string;
   JWT_ACCESS_TOKEN_SECRET: string;
   JWT_ACCESS_TOKEN_EXPIRES_IN: string;
+  JWT_REFRESH_TOKEN_SECRET: string;
+  JWT_REFRESH_TOKEN_EXPIRES_IN: string;
   CLOUDINARY: {
     CLOUD_NAME: string;
     API_KEY: string;
@@ -25,8 +27,8 @@ const loadEnvironmentVariables = (): EnvVars => {
     "BCRYPT_SALT_ROUND",
     "JWT_ACCESS_TOKEN_SECRET",
     "JWT_ACCESS_TOKEN_EXPIRES_IN",
-    // "JWT_REFRESH_TOKEN_SECRET",
-    // "JWT_REFRESH_TOKEN_EXPIRES_IN",
+    "JWT_REFRESH_TOKEN_SECRET",
+    "JWT_REFRESH_TOKEN_EXPIRES_IN",
     // "SUPER_ADMIN_EMAIL",
     // "SUPER_ADMIN_PASSWORD",
     // "GOOGLE_CLIENT_ID",
@@ -72,8 +74,8 @@ const loadEnvironmentVariables = (): EnvVars => {
     BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
     JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET as string,
     JWT_ACCESS_TOKEN_EXPIRES_IN: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN as string,
-    // JWT_REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_TOKEN_SECRET as string,
-    // JWT_REFRESH_TOKEN_EXPIRES_IN: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN as string,
+    JWT_REFRESH_TOKEN_SECRET: process.env.JWT_REFRESH_TOKEN_SECRET as string,
+    JWT_REFRESH_TOKEN_EXPIRES_IN: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN as string,
     // SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL as string,
     // SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
     // GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,

@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRoutes = void 0;
+const validateRequest_1 = require("./../../middlewares/validateRequest");
+const express_1 = require("express");
+const user_controller_1 = require("./user.controller");
+const user_validation_1 = require("./user.validation");
+const checkAuth_1 = require("../../utils/checkAuth");
+const multer_config_1 = require("../../config/multer.config");
+const router = (0, express_1.Router)();
+router.post("/register", (0, validateRequest_1.validateRequest)(user_validation_1.createUserZodSchema), user_controller_1.UserController.createUser);
+router.post("/login", user_controller_1.UserController.credentialLogin);
+router.patch("/:id", (0, checkAuth_1.checkAuth)(), multer_config_1.multerUpload.single("file"), (0, validateRequest_1.validateRequest)(user_validation_1.updateUserZodSchema), user_controller_1.UserController.updateUser);
+router.post("/logout", user_controller_1.UserController.logout);
+router.get("/me", (0, checkAuth_1.checkAuth)(), user_controller_1.UserController.getMe);
+router.post("/login-with-phone-number", user_controller_1.UserController.loginWithPhoneNumber);
+exports.UserRoutes = router;

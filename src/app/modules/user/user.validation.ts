@@ -34,9 +34,13 @@ export const createUserZodSchema = z.object({
     .optional(),
 });
 export const updateUserZodSchema = z.object({
+  name: z
+  .string("Name is required")
+  .min(2, "Name should be at least minimum of two characters")
+  .max(50, "Name should be maximum of 50 characters"),
   bio: z
-    .string("Name is required")
-    .min(2, "Name should be at least minimum of two characters")
+    .string("Bio is String")
+    .min(2, "Bio should be at least minimum of two characters")
     .max(50, "Name should be maximum of 50 characters")
     .optional(),
   profilePhoto: z.string("Photo must be string").optional(),

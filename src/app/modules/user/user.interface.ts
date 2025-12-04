@@ -10,12 +10,12 @@ export enum Role {
   }
 export interface IUser {
   _id?:string,
-  name: string;
+  name?: string;
   email?: string | null;
   password?: string | null;
   phone?: string | null;
-  bio: string | null;
-  profilePicture: string | null;
+  bio?: string | null;
+  profilePicture?: string | null;
   location?: string | null;
   role?:Role
   auths: IAuthProvider[];
